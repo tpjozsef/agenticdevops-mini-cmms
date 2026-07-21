@@ -41,7 +41,7 @@ Read the relevant doc **before** advising on or implementing anything in its are
 - `docs/decision-log.md` — numbered architectural decisions with rationale.
 - `docs/architecture-facts.md` — the Key Architecture Facts (Layer B2). The hard technical constraints every spec enforces.
 
-**Tier 2 — read when working in that area:** `docs/design-guide.md` (UI/UX + visual design — live now) · `docs/data-model.md` (asset / work-order / downtime schema — to author) · `docs/uns-contract.md` (UNS topic structure + MQTT surface — to author) · `docs/packaging.md` (electron-forge build/release + native-module rebuilds — to author). See the authority-docs-by-area index.
+**Tier 2 — read when working in that area:** `docs/design-guide.md` (UI/UX + visual design — live now) · `docs/data-model.md` (asset / work-order / downtime schema — to author) · `docs/api-contract.md` (renderer↔backend REST API surface — to author) · `docs/uns-contract.md` (UNS topic structure + MQTT surface — to author) · `docs/packaging.md` (electron-forge build/release + native-module rebuilds — to author). See the authority-docs-by-area index.
 
 ## 6. The non-negotiable rules
 
@@ -58,7 +58,7 @@ These apply to every task. Each exists because violating it caused a real, recor
 9. **Check completed work before assuming something isn't built.** Read the completed-work log first. *(Re-speccing existing features wastes the whole loop.)*
 10. **Consult the bug log before touching previously-buggy areas.** *(Patterns that caused a bug once recur.)*
 11. **Pre-flight checks for any structural layout change:** (a) find elements mixing structural and content utilities — split candidates; (b) enumerate every resizable boundary and check padding on **both** sides. *(Asymmetric divider padding is a recurring cross-project failure.)*
-12. **Contract docs sync in the same commit.** Any change to a module-boundary contract ships with its contract-doc + typed-surface updates in the same commit → `layer-b2/contract-sync.scaffold.md`. *(Stale contract docs = broken code at the boundary.)*
+12. **Contract docs sync in the same commit.** Any change to a module-boundary contract ships with its contract-doc + typed-surface updates in the same commit → `docs/contract-sync.md`. *(Stale contract docs = broken code at the boundary.)*
 13. **Ask the human when in doubt; flag trade-offs.** The human makes all product decisions. Present real forks clearly before proceeding. *(A guess on a consequential fork is a defect waiting to be found.)*
 14. **Verify the running process is the freshly built one before runtime testing.** "Build success" ≠ "the running process has the new code." Confirm a relaunch/reload actually loaded the change. *(A stale process lies convincingly — the visible layer looks right while the changed layer is old.)* **Electron caching trap:** main-process changes require a full app relaunch — a renderer reload (Ctrl/Cmd-R) reloads only the renderer and leaves the old main-process code running; after any Node/Electron version change, rebuild native modules (e.g. better-sqlite3) before testing.
 15. **Edit the human's files yourself; never hand them a shell script.** The PM has direct write access; doc updates, status flips, and log entries are the PM's job via file-edit tools, not `sed`/`awk` handed to the human. The only terminal commands the human runs are things the PM's environment genuinely can't do (the build, the coding-agent invocation, queries against live user data). *(Handing over a script outsources verification and breaks the PM's ownership of the docs.)*
