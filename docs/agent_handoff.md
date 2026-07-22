@@ -40,10 +40,12 @@ Then read what's relevant per the Tier-1/Tier-2 list in the project instructions
 
 **T-004 CI green on `main` (2026-07-22).** **Ordering decided (Architect): backend domain endpoints before the renderer login.** Planned backend slices, in order: **T-005 Assets API** (registry list/browse/detail with derived up-down status, manual register/edit/retire — FS §3) → **T-006 Downtime events + WO seeding** (report down / mark up, FS-Q1 service-level rejection, the event→WO seeding core — FS §4) → **T-007 Work-order API** (list/filter/detail/create, state machine with role-gated transitions + audit rows + abandon, planning — FS §§5–6). Renderer login + typed API client follows, against a stable API. UNS ingestion/publishing and packaging remain after that.
 
+**T-005 shipped and closed out (2026-07-22).** Assets API live on `main` (commit `22f7608`): five endpoints in `backend/app/assets.py` behind a router-level `require_user` (the new precedent for domain routers), derived status/durations computed at read time, DEC-008 manual-only edit/retire with 409s, path immutability structural (`AssetUpdate` has no `path` + `extra="forbid"`). Cursor QA PASS; runtime testing was **delegated to the PM by the Architect this task** — 12-check CL suite against a scratch-DB uvicorn (port 8123, scratchpad DB; dev DB untouched) passed in full. `docs/api-contract.md` § Assets landed same commit. Full record: `docs/completed_development.md` § T-005. **Session sprint in progress: Architect wants T-005→T-008 (initial UI) done this session.** T-006 and T-007 specs are pre-authored and in the tree (`docs/tasks/`); five PM defaults inside them are flagged for Architect rulings (executor rule = start sets `assigned_to`; no backdating; retired assets reject new activity; end-event not idempotent; post-creation priority is Planner-only via `plan`) — defaults are workable, none block.
+
 ## Immediate next steps
 
-1. PM: spec **T-005 — Assets API** (authority: `functional-spec.md` §3, `data-model.md`, `api-contract.md`; the `require_user`/`require_planner` gates are binding).
-2. Loop as established: Dev on `main` → Cursor QA → PM read-verify → human/PM runtime test → close-out → push → watch CI.
+1. Dev: **T-006 — Downtime API + WO seeding** (spec: `docs/tasks/task_T-006_downtime-wo-seeding.md`; command handed 2026-07-22). Then T-007 (spec ready), then PM specs T-008 (renderer login + typed client + initial UI).
+2. Loop as established: Dev on `main` → Cursor QA → PM read-verify → runtime test (PM-delegated this session) → close-out → push → watch CI.
 
 ## Architecture authorities by area (read the one you're touching)
 

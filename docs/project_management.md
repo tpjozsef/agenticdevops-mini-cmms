@@ -33,7 +33,12 @@ SQLite and Postgres; never read/write/delete data outside the app's own store."
 | ✅ | T-002 | Renderer scaffold — Electron/Vite/React + green CI | 2026-07-22 |
 | ✅ | T-003 | Data model — SQLAlchemy/Alembic + core schema | 2026-07-22 |
 | ✅ | T-004 | Auth — seeded accounts, sessions, role enforcement | 2026-07-22 |
+| ✅ | T-005 | Assets API — registry, derived status, manual lifecycle | 2026-07-22 |
+| 🟡 | T-006 | Downtime API — report/end events, WO seeding | |
+| 🔴 | T-007 | Work-order API — state machine, planning, audit | |
 
 ## Queued / not-yet-specced items
 
-*(none — next items get queued here as the FS's feature slices are cut)*
+Slicing decided by the Architect 2026-07-22 (see handoff):
+
+- **T-008** — Renderer initial UI (login + typed API client + asset browser/detail, WO list/detail/create — against the stable T-005–007 API)

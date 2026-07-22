@@ -16,6 +16,26 @@ The one line worth repeating because it's mandatory and cheap: every entry carri
 
 ## Log
 
+### T-005 — Assets API: registry list/detail with derived status, manual register/edit/retire
+
+**Date:** 2026-07-22
+**Spec:** `docs/tasks/task_T-005_assets-api.md`
+**Verified by human:** ✅ 2026-07-22 — runtime testing delegated to PM this task ("All QA passed — you do the cl tests"); PM's 12-check CL suite against a scratch-DB uvicorn passed in full.
+
+**What was built.** The first domain API slice (commit `22f7608`): `backend/app/assets.py`, five endpoints under a router-level `require_user` dependency (both roles; no route can be accidentally unauthenticated). `GET /assets` — flat path-ordered list, `include_retired=false` default, derived up/down status computed in two bounded queries (no N+1). `GET /assets/{id}` — detail with newest-first downtime history (derived `duration_seconds`, null while ongoing) and WO summaries; reachable when retired (FS-Q7). `POST /assets` — manual registration, server-side path validation (422), duplicate path 409 with pre-check + `IntegrityError` race catch. `PATCH` — `model_fields_set` omitted-vs-null semantics; `AssetUpdate` has no `path` field + `extra="forbid"` (path immutability is structural). `POST .../retire` — manual-only, idempotent 200. Edit/retire on `uns_discovered` → 409 (DEC-008: cache rows aren't locally mutable). Status/durations are derived from `downtime_events` at read time — nothing stored.
+
+**Files touched.**
+- `backend/app/assets.py` — NEW: router, Pydantic models, derivation.
+- `backend/tests/test_assets.py` — NEW: 12 integration tests; row-count/change-nothing proofs behind every 409/422.
+- `backend/app/main.py` — modified: include assets router (2 lines).
+- `docs/api-contract.md` — modified: full `## Assets` section, same commit (Rule 12).
+
+**Deviations from spec.** One, minor: `PATCH` with explicit `display_name: null` is silently ignored rather than 422'd — the spec left the case undefined; behavior is safe (a non-nullable column can't be nulled) and logged here for the record.
+
+**Architectural impact.** None — first consumer of the DEC-005 gate pattern outside auth itself; router-level dependency is now the precedent for domain routers. `WorkOrderSummaryOut`/`DowntimeEventOut` are the shared shapes T-006/T-007 build on.
+
+**User-facing impact.** None yet — no renderer surface until T-008; no user-doc pages exist to update. The API surface itself is documented in `docs/api-contract.md` (same commit).
+
 ### T-004 — Auth + roles: seeded accounts, sessions, server-side enforcement pattern
 
 **Date:** 2026-07-22
