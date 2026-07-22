@@ -22,12 +22,14 @@ Then read what's relevant per the Tier-1/Tier-2 list in the project instructions
 
 **Scaffolding deleted; slot gate clean.** The template `layer-a/`, `layer-b2/`, `layer-b1-example/`, `agent-config/*.template.md`, `teaching/`, `diagrams/`, `INSTANTIATE.md`, and `SETUP.md` are removed. The slot gate returns only the three intentional ADOPT-IF markers (in `contract-sync.md`, `sub-agents.md`, `skills.md`) — the written-down "revisit when X" triggers, which stay.
 
-**Remaining:** the human syncs the three constitution edits into the canonical Claude Project instructions field (api-contract Tier 2, Rule 12 repoint, §3 review-agent config path). Then the first task, T-001 (repo scaffold + CI), which carries `ci.yml` so CI goes green on its first real run. CI cannot pass until T-001 scaffolds `package.json` / `requirements.txt` / tests.
+**T-001 shipped and closed out (2026-07-22) — first full loop trip complete.** The backend skeleton is live: FastAPI `GET /health` through a typed Pydantic model, one passing pytest, ruff+mypy strict clean, `docs/api-contract.md` seeded in the same commit (Rule 12), root `.gitignore`. Commit `0a3e2a2` on `main` (direct commit — tolerated once; branch→PR resumes at T-002 when CI exists). Dev → Cursor QA → PM read-verify → human runtime test all exercised for real. Full record: `docs/completed_development.md` § T-001. Backend venv lives at `backend/.venv` (`source .venv/bin/activate` before `uvicorn app.main:app`). Note: the PM is temporarily running as a Claude Code instance (Desktop MCP bug anthropics/claude-code#79971).
+
+**Also remaining:** the human syncs the three constitution edits into the canonical Claude Project instructions field (api-contract Tier 2, Rule 12 repoint, §3 review-agent config path).
 
 ## Immediate next steps
 
-1. Human: sync the three edits into the Claude Project instructions field (api-contract Tier 2, Rule 12 repoint, §3 review-agent config path).
-2. Write and run the first task spec: T-001 — repo scaffold + green CI (carries `ci.yml`).
+1. PM: spec T-002 — renderer scaffold + green CI (carries `ci.yml`; branch→PR→merge discipline resumes here).
+2. Human: sync the three constitution edits into the Claude Project instructions field (if still relevant while the PM runs as Claude Code).
 
 ## Architecture authorities by area (read the one you're touching)
 

@@ -29,8 +29,8 @@ SQLite and Postgres; never read/write/delete data outside the app's own store."
 
 | Status | ID | Title | Verified |
 |---|---|---|---|
-| — | — | *(no tasks specced yet)* | — |
+| ✅ | T-001 | Backend skeleton — FastAPI /health + tooling | 2026-07-22 |
 
 ## Queued / not-yet-specced items
 
-- **T-001 (next): repo scaffold + green CI** — stand up `package.json` + the Electron/Vite/TS renderer skeleton, the FastAPI backend skeleton with `requirements.txt`, and a trivial passing test on each side, so `docs/devops_pipeline.md`'s CI has something real to run. This is the task that makes Step 4 (CI green) true.
+- **T-002 (next): renderer scaffold + green CI** — the remainder of the original repo-scaffold item after T-001 sliced off the backend: stand up `package.json` + the Electron/Vite/TS renderer skeleton with a trivial passing test, plus `ci.yml` so `docs/devops_pipeline.md`'s CI has something real to run on both sides. This is the task that makes Step 4 (CI green) true.
