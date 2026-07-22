@@ -16,7 +16,7 @@
 | What moves together at a boundary | `docs/contract-sync.md` | before changing **any** boundary contract (Rule 12) |
 | Auth / roles (authorization) | `docs/architecture-facts.md` § Security baseline | any login, token/session, or role-gating work |
 | Work-order / downtime domain | behavior: `docs/functional-spec.md` §§ 4–6 · schema: `docs/data-model.md` · constraints: `docs/architecture-facts.md` § Canonical data formats | any work-order seeding, planning/scheduling, or downtime-status logic |
-| UI visual design | `docs/design-guide.md` | any UI work (tokens, type scale, component patterns) |
+| UI visual design | `docs/design-guide.md` *(live — starter baseline 2026-07-22, awaiting Architect design pass)* | any UI work (tokens, type scale, component patterns) |
 | Packaging / release | `docs/packaging.md` *(to author)* | any build, installer, or native-module-rebuild work |
 
 **Notes**

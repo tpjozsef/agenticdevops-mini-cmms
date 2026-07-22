@@ -16,6 +16,26 @@ The one line worth repeating because it's mandatory and cheap: every entry carri
 
 ## Log
 
+### T-006 — Downtime events API + atomic work-order seeding (the event→WO core)
+
+**Date:** 2026-07-22
+**Spec:** `docs/tasks/task_T-006_downtime-wo-seeding.md`
+**Verified by human:** ✅ 2026-07-22 — Cursor QA pass confirmed by the Architect ("QA Passed"); runtime delegated to PM — 10-check CL suite against a scratch-DB uvicorn passed in full.
+
+**What was built.** The product's core primitive, live (commit `25fa63a`): `backend/app/downtime.py` with `record_downtime(db, asset, producer, reported_by)` — an HTTP-free service creating a downtime event + its seeded WO in one transaction (flush → seed → single commit; rollback removes both), written for direct reuse by the future UNS ingestion (`producer="uns"` → origin `uns_downtime`, `created_by` null — proven by a direct-call test and a live direct call in the PM's runtime suite). FS-Q1 raises a domain `OngoingDowntimeError` carrying `ongoing_event_id` + `work_order_id`; the `IntegrityError` race on the partial unique index rolls back, re-queries, and rejects identically — never a 500 (proven by a stateful-monkeypatch race test). Two `require_user` endpoints: `POST /assets/{id}/downtime-events` (201 `{event, work_order}`; 404/409-retired/409-FS-Q1-pointer) and `POST /downtime-events/{id}/end` (200 with derived duration; 409 for `uns` producer, 409 already-ended — attribution never rewritten). Ending never touches WO status (FS §4 independence, tested). Shapes reused from `app.assets` — no duplicates.
+
+**Files touched.**
+- `backend/app/downtime.py` — NEW: service + router.
+- `backend/tests/test_downtime.py` — NEW: 10 tests incl. atomicity row-counts, exact 409-body equality, FS-Q2 re-seed, race.
+- `backend/app/main.py` — modified: include downtime router (2 lines).
+- `docs/api-contract.md` — modified: `## Downtime events` section, same commit (Rule 12).
+
+**Deviations from spec.** None.
+
+**Architectural impact.** None — `record_downtime` is now the single seeding path (the contract doc mandates no parallel path may be written); FS-Q8 publish hook will attach at T-007's transition helper, not here.
+
+**User-facing impact.** None yet — surface arrives with T-008; API documented in `docs/api-contract.md` (same commit).
+
 ### T-005 — Assets API: registry list/detail with derived status, manual register/edit/retire
 
 **Date:** 2026-07-22
