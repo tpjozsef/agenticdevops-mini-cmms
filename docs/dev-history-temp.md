@@ -1,6 +1,6 @@
 # Development History — CMMess (temp doc)
 
-> **Temporary doc.** Rendered snapshot of the commit history as of 2026-07-22 (`de42295`).
+> **Temporary doc.** Rendered snapshot of the commit history as of 2026-07-22 (`57cbc02`).
 > Regenerate or delete once stale; the git log is the authority.
 
 ## Commit graph
@@ -33,7 +33,13 @@ gitGraph
   commit id: "22f7608 T-005 assets API" tag: "T-005"
   commit id: "69a891c PM: T-005 close-out, T-005/6/7 specs"
   commit id: "25fa63a T-006 downtime events + WO seeding" tag: "T-006"
-  commit id: "de42295 PM: T-006 close-out, T-008 spec" type: HIGHLIGHT
+  commit id: "de42295 PM: T-006 close-out, T-008 spec"
+  commit id: "93dfaa1 T-007 work-order API" tag: "T-007"
+  commit id: "23708c5 PM: T-007 close-out, backend surface complete"
+  commit id: "a30e497 T-008 renderer initial UI" tag: "T-008"
+  commit id: "2d14be3 PM: T-008 close-out, sprint complete"
+  commit id: "1366f21 PM: handoff, sprint fully CI-clean"
+  commit id: "57cbc02 dev-history snapshot refresh" type: HIGHLIGHT
 ```
 
 > Note: from T-004 onward, work lands directly on `main` — branch→PR consciously suspended for this session (Architect's call, workflow §8 skip); CI runs post-hoc on each push.
@@ -68,6 +74,12 @@ timeline
   section 2026-07-22 — T-006 Downtime + WO seeding
     Event→WO core : Downtime events API : Atomic work-order seeding : FS-Q1 pointer 409 : UNS-reusable record_downtime()
     Close-out : design-guide starter : T-008 spec authored
+  section 2026-07-22 — T-007 Work-order API
+    State machine : FS §5 five intent-named transitions : Planning : Single-choke-point audit trail (_apply_transition)
+    Close-out : Backend domain surface complete
+  section 2026-07-22 — T-008 Renderer initial UI
+    Product surface : Typed API client (16 contract shapes) : Auth shell : All FS §7 screens live : Backend CORS
+    Sprint wrap : v1 reactive loop live : TRAP-002 recorded : Sprint fully CI-clean
 ```
 
 ## What each task delivered
@@ -102,6 +114,15 @@ flowchart TD
     W1["Downtime events API<br/>FS-Q1 structured 409 pointer"]
     W2["record_downtime() service<br/>atomic WO seeding, UNS-reusable"]
   end
+  subgraph t007["T-007 — Work-order API"]
+    O1["FS §5 state machine<br/>5 intent-named transitions"]
+    O2["_apply_transition choke point<br/>audit trail, FS-Q8 publish hook"]
+  end
+  subgraph t008["T-008 — Renderer initial UI"]
+    F1["Typed API client<br/>16 contract shapes (Rule 12 TS leg live)"]
+    F2["Auth shell + all FS §7 screens<br/>zero new npm deps"]
+    F3["Backend CORS<br/>(CMMESS_CORS_ORIGINS)"]
+  end
   B1 --> t001
   t001 --> t002
   A2 -.->|contract discipline| R1
@@ -110,8 +131,11 @@ flowchart TD
   t003 --> t004
   t004 --> t005
   t005 --> t006
+  t006 --> t007
+  t007 --> t008
   U2 -.->|router-level auth precedent| S1
-  t006 --> NEXT(["Frontier: T-007 work-order API<br/>then T-008 renderer initial UI<br/>(specs in docs/tasks/)"])
+  W2 -.->|FS-Q1 pointer surfaced in UI| F2
+  t008 --> NEXT(["Frontier: UNS ingestion + FS-Q8 publishing,<br/>then packaging (specs to be authored)"])
 ```
 
 ## Quick reference
@@ -127,4 +151,6 @@ flowchart TD
 | T-004 | `04941a4` | Auth + roles: seeded accounts, sessions, server-side role enforcement |
 | T-005 | `22f7608` | Assets API: registry list/detail with derived status, manual register/edit/retire |
 | T-006 | `25fa63a` | Downtime events API + atomic WO seeding (FS-Q1 pointer 409, UNS-reusable `record_downtime`) |
-| PM close-outs | `507543d`, `6f75765`, `288781a`, `bdc7b36`, `06bfaa3`, `1e972cb`, `69a891c`, `de42295` | Handoff/index kept current after each task; T-005–T-008 specs + design-guide starter landed |
+| T-007 | `93dfaa1` | Work-order API: FS §5 state machine, planning, single-choke-point audit trail |
+| T-008 | `a30e497` | Renderer initial UI: typed API client, auth shell, all FS §7 screens; backend CORS |
+| PM close-outs | `507543d`, `6f75765`, `288781a`, `bdc7b36`, `06bfaa3`, `1e972cb`, `69a891c`, `de42295`, `23708c5`, `2d14be3`, `1366f21` | Handoff/index kept current after each task; T-005–T-008 specs + design-guide starter landed; sprint closed CI-clean |
